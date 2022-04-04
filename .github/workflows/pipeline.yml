@@ -1,0 +1,28 @@
+name: 'Normal Pipeline'
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  le_pipeline:
+    name: 'Le Pipeline'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dirs: [development, staging, production]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Must run 1
+      run: |
+        cd ${{ matrix.dirs }}
+        terraform fmt
+
+    - name: Must run 2
+      run: |
+        cd ${{ matrix.dirs }}
+        terraform init
